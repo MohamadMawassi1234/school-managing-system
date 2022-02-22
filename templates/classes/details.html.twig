@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{ class.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ class.name }}</h1>
+	<h4>Section:
+		<span class="fw-normal">{{ class.section }}</span></h4>
+	<hr>
+	<a href="/classes">Go Back</a>
+{% endblock %}

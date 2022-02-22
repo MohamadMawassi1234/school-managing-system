@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Search Students by Name
+{% endblock %}
+
+{% block body %}
+	<h2>Search Students by Name</h2>
+	<hr>
+	<form class="d-flex" action="/students/filterbyname" method="post">
+		<input class="form-control" name="student_search_query" type="text" required>
+		<button class="btn btn-secondary" type="submit" name="student_search_submit">Search</button>
+	</form>
+
+	{% if filteredStudents %}
+		<table class="table table-striped mt-3">
+			<tbody>
+				{% for student in filteredStudents %}
+					<tr>
+						<td>{{ student }}</td>
+					</tr>
+
+				{% endfor %}
+			</tbody>
+
+
+		</table>
+	{% endif %}
+	<hr>
+	<a href="/students">Go Back</a>
+
+{% endblock %}

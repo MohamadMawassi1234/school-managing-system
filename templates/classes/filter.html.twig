@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Search Classes
+{% endblock %}
+
+{% block body %}
+    <h2>Search Classes</h2>
+    <hr>
+    <form class="d-flex" action="/classes/filter" method="post">
+    <input class="form-control" name="class_search_query" type="text" required>
+    <button class="btn btn-secondary" type="submit" name="class_search_submit">Search</button>
+    </form>
+
+    {% if filteredClasses %}
+        <table class="table table-striped mt-3">
+            <tbody>
+                {% for class in filteredClasses %}
+                    <tr>
+                        <td>{{ class }}</td>
+                    </tr>
+                    
+                {% endfor %}
+            </tbody>
+                
+            
+        </table>
+    {% endif %}
+    <hr>
+	<a href="/classes">Go Back</a>
+
+{% endblock %}

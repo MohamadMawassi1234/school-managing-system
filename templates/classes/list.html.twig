@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Classes
+{% endblock %}
+
+{% block body %}
+	<a href="/classes/filter" class="btn btn-secondary">Filter Classes</a>
+
+	{% if classes %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Class</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for class in classes %}
+					<tr>
+						<td>{{ class.name }}</td>
+						<td>
+							<a href="/class/{{ class.id }}" class="btn btn-dark">Details</a>
+							<a href="/class/edit/{{ class.id }}" class="btn btn-light">Edit</a>
+							<a href="/class/delete/{{ class.id }}" class="btn btn-danger">Delete</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<a href="/class/add" class="btn btn-primary mb-3">New Class</a>
+		{{ knp_pagination_render(classes, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
+	{% else %}
+		<p>No classes to display</p>
+	{% endif %}
+{% endblock %}

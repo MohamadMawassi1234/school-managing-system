@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Courses
+{% endblock %}
+
+{% block body %}
+	<a href="/courses/filter" class="btn btn-secondary">Filter Courses</a>
+
+	{% if courses %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Course</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for course in courses %}
+					<tr>
+						<td>{{ course.name }}</td>
+						<td>
+							<a href="/course/{{ course.id }}" class="btn btn-dark">Details</a>
+							<a href="/course/edit/{{ course.id }}" class="btn btn-light">Edit</a>
+							<a href="/course/delete/{{ course.id }}" class="btn btn-danger">Delete</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<a href="/course/add" class="btn btn-primary mb-3">New Course</a>
+		{{ knp_pagination_render(courses, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
+	{% else %}
+		<p>No courses to display</p>
+	{% endif %}
+{% endblock %}

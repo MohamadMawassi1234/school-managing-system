@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{ course.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ course.name }}</h1>
+	<p><span class="fw-bold">Description: </span>{{ course.description }}</p>
+	{% if course.class %}
+		<p><span class="fw-bold">Class: </span>{{ course.class.name }}</p>
+	{% endif %}
+	<hr>
+	<a href="/courses">Go Back</a>
+{% endblock %}

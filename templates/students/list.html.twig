@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Students
+{% endblock %}
+
+{% block body %}
+	<a href="/students/filterbyname" class="btn btn-secondary">Filter By Name</a>
+	<a href="/student/filterbyclass" class="btn btn-info">Filter By Class</a>
+
+	{% if students %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Student</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for student in students %}
+					<tr>
+						{% set name = student.firstName ~ " " ~ student.lastName %}
+						<td>{{ name }}</td>
+						<td>
+							<a href="/student/{{ student.id }}" class="btn btn-dark">Details</a>
+							<a href="/student/edit/{{ student.id }}" class="btn btn-light">Edit</a>
+							<a href="/student/delete/{{ student.id }}" class="btn btn-danger">Delete</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<a href="/student/new" class="btn btn-primary mb-3">New Student</a>
+		{{ knp_pagination_render(students, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
+	{% else %}
+		<p>No students to display</p>
+	{% endif %}
+{% endblock %}

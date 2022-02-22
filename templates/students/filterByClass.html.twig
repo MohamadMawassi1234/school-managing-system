@@ -1,0 +1,45 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Filter By Class
+{% endblock %}
+
+{% block body %}
+    <h2>Filter Students by Class</h2>
+    <hr>
+    <h4>Choose class then click "Search": </h4>
+    <form class="d-flex" action="/student/filterbyclass" method="post">
+    <select name="class" id="" class="form-select">
+        {% for class in classes %}
+            <option value={{ class.id }}>{{ class.name }}</option>     
+        {% endfor %}
+    </select>
+    <button class="btn btn-secondary" type="submit" name="submit">Search</button>
+    </form>
+
+    {% if studentsInClass %}
+        <table class="table table-striped mt-3">
+            <thead>
+				<tr>
+					<th>Students in {{ classSelected }}</th>
+				</tr>
+			</thead>
+            <tbody>
+                {% for student in studentsInClass %}
+                    <tr>
+                        <td>{{ student }}</td>
+                    </tr>
+                    
+                {% endfor %}
+            </tbody>
+                
+            
+        </table>
+    {% endif %}
+    <hr>
+	<a href="/students">Go Back</a>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

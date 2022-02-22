@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{ student.firstName }}
+	{{ student.lastName }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ student.firstName }}
+		{{ student.lastName }}</h1>
+	<p><span class="fw-bold">Birthdate: </span> {{ student.dateOfBirth }}</p>
+	<p class="fw-bold">Image: </p>
+    <img style="height:200px" src={{ student.image }} alt="img">
+	{% if student.class %}
+		<p><span class="fw-bold">Class: </span> {{ student.class.name }}</p>
+	{% endif %}
+	<hr>
+	<a href="/students">Go Back</a>
+{% endblock %}
