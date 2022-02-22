@@ -2,9 +2,9 @@
 
 ## Commands 
 
-composer create-project symfony/skeleton school-managing-system
-composer require annotations
-composer require twig 
+composer create-project symfony/skeleton school-managing-system <br />
+composer require annotations <br />
+composer require twig <br />
 composer require doctrine maker
 php bin/console doctrine:database:create
 php bin/console make:entity Student     
