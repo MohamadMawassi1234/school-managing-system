@@ -1,5 +1,9 @@
 # school-managing-system
 
+## Database
+
+I exported the database and put it in a "database" folder.
+
 ## Commands 
 
 composer create-project symfony/skeleton school-managing-system <br />
