@@ -1,0 +1,24 @@
+{% extends "inc/studentIndex.html.twig" %}
+
+{% block title %}
+	{{ student.firstName }}
+	{{ student.lastName }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ student.firstName }}
+		{{ student.lastName }}</h1>
+	<p><span class="fw-bold">Birthdate: </span> {{ student.dateOfBirth }}</p>
+	<p class="fw-bold">Image: </p>
+	{% if student.image %}
+		<img style="height:200px" src="{{ asset(student.image, 'uploads') }}" alt="img">
+    {% else %}
+        <p>No image uploaded</p>
+	{% endif %}
+	
+	{% if student.class %}
+		<p><span class="fw-bold">Class: </span> {{ student.class.name }}</p>
+	{% endif %}
+	<hr>
+{#	<a href={{ path('student_list') }}>Go Back</a> #}
+{% endblock %}

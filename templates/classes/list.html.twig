@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<a href="/classes/filter" class="btn btn-secondary">Filter Classes</a>
+	<a href={{ path('class_filter') }} class="btn btn-secondary">Filter Classes</a>
 
 	{% if classes %}
 		<table class="table table-striped">
@@ -27,7 +27,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		<a href="/class/add" class="btn btn-primary mb-3">New Class</a>
+		<a href={{ path('add_class') }} class="btn btn-primary mb-3">New Class</a>
 		{{ knp_pagination_render(classes, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
 	{% else %}
 		<p>No classes to display</p>

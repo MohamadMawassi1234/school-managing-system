@@ -10,12 +10,13 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 final class StudentAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $form): void
     {
-        $form->add('first_name', TextType::class)->add('last_name', TextType::class)->add('date_of_birth', TextType::class)->add('image', TextType::class)->add('class', EntityType::class, [
+        $form->add('first_name', TextType::class)->add('last_name', TextType::class)->add('date_of_birth', TextType::class)->add('imageFile', VichImageType::class)->add('class', EntityType::class, [
             'class' => Classes::class,
             'choice_label' => 'name',
         ]);
@@ -33,6 +34,6 @@ final class StudentAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('first_name')->add('last_name')->add('date_of_birth')->add('image')->add('class.name', null, ['label' => 'Class']);
+        $show->add('first_name')->add('last_name')->add('date_of_birth')->add('imageFile')->add('class.name', null, ['label' => 'Class']);
     }
 }

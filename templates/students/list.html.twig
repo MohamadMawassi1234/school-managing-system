@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block body %}
-	<a href="/students/filterbyname" class="btn btn-secondary">Filter By Name</a>
-	<a href="/student/filterbyclass" class="btn btn-info">Filter By Class</a>
+	<a href={{ path('student_filter') }} class="btn btn-secondary">Filter By Name</a>
+	<a href={{ path('filter_by_class') }} class="btn btn-info">Filter By Class</a>
 
 	{% if students %}
 		<table class="table table-striped">
@@ -29,7 +29,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		<a href="/student/new" class="btn btn-primary mb-3">New Student</a>
+		<a href={{ path('new_student') }} class="btn btn-primary mb-3">New Student</a>
 		{{ knp_pagination_render(students, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
 	{% else %}
 		<p>No students to display</p>

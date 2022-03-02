@@ -11,5 +11,5 @@
 		<p><span class="fw-bold">Class: </span>{{ course.class.name }}</p>
 	{% endif %}
 	<hr>
-	<a href="/courses">Go Back</a>
+	<a href={{ path('course_list') }}>Go Back</a>
 {% endblock %}

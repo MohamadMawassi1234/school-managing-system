@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AppController extends AbstractController {
     /**
-     * @Route("/")
+     * @Route("/", name="home")
      */
     public function index() {
         return $this->render("base.html.twig");

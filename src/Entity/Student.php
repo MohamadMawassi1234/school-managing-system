@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="student", indexes={@ORM\Index(name="class_id", columns={"class_id"})})
  * @ORM\Entity
+ * @Vich\Uploadable
  */
 class Student
 {
@@ -50,6 +53,19 @@ class Student
     private $image;
 
     /**
+     * @Vich\UploadableField(mapping="student_images", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @var datetime_immutable
+     *
+     * @ORM\Column(name="updated_at", type="datetime_immutable", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
      * @var \Classes
      *
      * @ORM\ManyToOne(targetEntity="Classes")
@@ -88,6 +104,21 @@ class Student
         return $this;
     }
 
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTimeImmutable('now');
+        }
+    }
+
     public function getDateOfBirth(): ?string
     {
         return $this->dateOfBirth;
@@ -108,6 +139,18 @@ class Student
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

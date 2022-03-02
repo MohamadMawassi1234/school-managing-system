@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\Student;
 use App\Entity\Classes;
+use App\Entity\User;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Knp\Component\Pager\PaginatorInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class StudentController extends AbstractController {
     /**
@@ -89,7 +92,7 @@ class StudentController extends AbstractController {
             ->add("first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control")))
             ->add("last_name", TextType::class, array('label' => "Last Name:", "attr" => array('class' => "form-control")))
             ->add("date_of_birth", TextType::class, array('label' => "Date of Birth:", 'required' => false, "attr" => array('class' => "form-control")))
-            ->add("image", TextType::class, array('label' => "Image Link:", 'required' => false, "attr" => array('class' => "form-control")))
+            ->add("imageFile", VichImageType::class, array('label' => "Image Link:", 'required' => false, "attr" => array('class' => "form-control")))
             ->add('class', EntityType::class, [
                 "attr" => array('class' => "form-select"),
                 'label' => "Class: ",
@@ -128,7 +131,7 @@ class StudentController extends AbstractController {
             ->add("first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control")))
             ->add("last_name", TextType::class, array('label' => "Last Name:", "attr" => array('class' => "form-control")))
             ->add("date_of_birth", TextType::class, array('label' => "Date of Birth:", 'required' => false, "attr" => array('class' => "form-control")))
-            ->add("image", TextType::class, array('label' => "Image Link:", 'required' => false, "attr" => array('class' => "form-control")))
+            ->add("imageFile", VichImageType::class, array('label' => "Image Link:", 'required' => false, "attr" => array('class' => "form-control")))
             ->add('class', EntityType::class, [
                 "attr" => array('class' => "form-select"),
                 'label' => "Class: ",
@@ -162,7 +165,7 @@ class StudentController extends AbstractController {
      }
 
      /**
-     * @Route("/student/delete/{id}")
+     * @Route("/student/delete/{id}", name="student_delete")
      * @Method({"DELETE"})
      */
     public function delete($id) {
@@ -174,4 +177,52 @@ class StudentController extends AbstractController {
 
         return $this->redirectToRoute('student_list');
      }
+
+    /**
+      * @Route("/studentuser", name="logged_in_student_details")
+      */
+      public function loggedInStudentDetails() {
+        $session = new Session();
+        // $session->start();
+        $student= $this->getDoctrine()->getRepository(Student::class)->find($session->get('id'));
+        return $this->render("users/details.html.twig", array("student" => $student));
+        return new Response($session->get('id'));  
+      }
+
+    /**
+     * @Route("/studentuseredit", name="logged_in_student_edit")
+     */
+    public function loggedInStudentEdit(Request $request) {
+        $student = new Student();
+        $session = $request->getSession();
+        $student= $this->getDoctrine()->getRepository(Student::class)->find($session->get('id'));
+
+        $form = $this->createFormBuilder($student)
+            ->add("first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control")))
+            ->add("last_name", TextType::class, array('label' => "Last Name:", "attr" => array('class' => "form-control")))
+            ->add("date_of_birth", TextType::class, array('label' => "Date of Birth:", 'required' => false, "attr" => array('class' => "form-control")))
+            ->add("imageFile", VichImageType::class, array('label' => "Image Link:", 'required' => false, "attr" => array('class' => "form-control")))
+            ->add('class', EntityType::class, [
+                "attr" => array('class' => "form-select"),
+                'label' => "Class: ",
+                'class' => Classes::class,
+                'choice_label' => 'name',
+            ])
+            ->add('Update', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn-primary mt-3')
+            ))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('logged_in_student_details');
+        }
+
+        return $this->render('users/edit.html.twig', array('form' => $form->createView()));
+    }
 }
