@@ -19,15 +19,21 @@
 					<tr>
 						<td>{{ class.name }}</td>
 						<td>
-							<a href="/class/{{ class.id }}" class="btn btn-dark">Details</a>
-							<a href="/class/edit/{{ class.id }}" class="btn btn-light">Edit</a>
-							<a href="/class/delete/{{ class.id }}" class="btn btn-danger">Delete</a>
+							<a href={{ path('class_details', {id: class.id}) }} class="btn btn-dark">Details</a>
+							{% if is_granted('ROLE_COORDINATOR') %}
+								<a href={{ path('edit_class', {id: class.id}) }} class="btn btn-light">Edit</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') %}
+								<a href={{ path('delete_class', {id: class.id}) }} class="btn btn-danger">Delete</a>
+							{% endif %}
 						</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		<a href={{ path('add_class') }} class="btn btn-primary mb-3">New Class</a>
+		{% if is_granted('ROLE_COORDINATOR') %}
+			<a href={{ path('add_class') }} class="btn btn-primary mb-3">New Class</a>
+		{% endif %}
 		{{ knp_pagination_render(classes, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
 	{% else %}
 		<p>No classes to display</p>

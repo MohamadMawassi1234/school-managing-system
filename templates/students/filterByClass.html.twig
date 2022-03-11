@@ -7,7 +7,7 @@
     <h2>Filter Students by Class</h2>
     <hr>
     <h4>Choose class then click "Search": </h4>
-    <form class="d-flex" action="/student/filterbyclass" method="post">
+    <form class="d-flex" action={{ path('filter_by_class') }} method="post">
     <select name="class" id="" class="form-select">
         {% for class in classes %}
             <option value={{ class.id }}>{{ class.name }}</option>     

@@ -53,6 +53,13 @@ class Student
     private $image;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true)
+     */
+    private $thumbnail;
+
+    /**
      * @Vich\UploadableField(mapping="student_images", fileNameProperty="image")
      * @var File
      */
@@ -139,6 +146,18 @@ class Student
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }

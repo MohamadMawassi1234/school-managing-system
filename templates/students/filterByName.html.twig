@@ -6,7 +6,7 @@
 {% block body %}
 	<h2>Search Students by Name</h2>
 	<hr>
-	<form class="d-flex" action="/students/filterbyname" method="post">
+	<form class="d-flex" action={{ path('student_filter') }} method="post">
 		<input class="form-control" name="student_search_query" type="text" required>
 		<button class="btn btn-secondary" type="submit" name="student_search_submit">Search</button>
 	</form>

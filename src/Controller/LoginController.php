@@ -12,20 +12,13 @@ use App\Entity\Student;
 class LoginController extends AbstractController
 {
     /**
-     * @Route("admin/login", name="app_login")
+     * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $session = new Session();
         if ($this->getUser()) {            
-            if ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN']) {
                 return $this->redirectToRoute('home');
-            } elseif ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_STUDENT']) {
-                $session->set('id', $this->getUser()->getStudent()->getId());
-                return $this->redirectToRoute('logged_in_student_details');
-            }
-            
-            
         }
 
         // get the login error if there is one

@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
 	<div class="container">
 
-		<a href="/" class="navbar-brand">School Logo</a>
+		{% block logo %}
+			<a href={{ path('home') }} class="navbar-brand">School Logo</a>
+		{% endblock %}
 		<button type="button" data-bs-toggle="collapse" data-bs-target="#mobile-nav" class="navbar-toggler">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -10,13 +12,13 @@
 		<div class="collapse navbar-collapse" id="mobile-nav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a href="/students" class="nav-link">Students</a>
+					<a href={{ path('student_list') }} class="nav-link">Students</a>
 				</li>
 				<li class="nav-item">
-					<a href="/classes" class="nav-link">Classes</a>
+					<a href={{ path('class_list') }} class="nav-link">Classes</a>
 				</li>
 				<li class="nav-item">
-					<a href="/courses" class="nav-link">Courses</a>
+					<a href={{ path('course_list') }} class="nav-link">Courses</a>
 				</li>
 				<li class="nav-item">
 					<a href={{ path('app_logout') }} class="nav-link">Logout</a>

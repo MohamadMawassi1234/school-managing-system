@@ -39,12 +39,12 @@ class RegistrationController extends AbstractController
     {   
         $session = new Session();
         if ($this->getUser()) {
-            if ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN']) {
+            // if ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN']) {
                 return $this->redirectToRoute('home');
-            } elseif ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_STUDENT']) {
-                $session->set('id', $this->getUser()->getStudent()->getId());
-                return $this->redirectToRoute('logged_in_student_details');
-            }
+            // } elseif ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_STUDENT']) {
+            //     $session->set('id', $this->getUser()->getStudent()->getId());
+            //     return $this->redirectToRoute('logged_in_student_details');
+            // }
     }
 
         $student = new Student();

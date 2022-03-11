@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -49,8 +50,12 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        if ($token->getUser()->isStudent()) {
+            return new RedirectResponse($this->urlGenerator->generate('student_details', ['id' => $token->getUser()->getStudent()->getId()]));
+        }
+
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

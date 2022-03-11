@@ -19,15 +19,21 @@
 					<tr>
 						<td>{{ course.name }}</td>
 						<td>
-							<a href="/course/{{ course.id }}" class="btn btn-dark">Details</a>
-							<a href="/course/edit/{{ course.id }}" class="btn btn-light">Edit</a>
-							<a href="/course/delete/{{ course.id }}" class="btn btn-danger">Delete</a>
+							<a href={{ path('course_details', {id: course.id}) }} class="btn btn-dark">Details</a>
+							{% if is_granted('ROLE_COORDINATOR') %}
+								<a href={{ path('edit_course', {id: course.id}) }} class="btn btn-light">Edit</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') %}
+								<a href={{ path('delete_course', {id: course.id}) }} class="btn btn-danger">Delete</a>
+							{% endif %}
 						</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		<a href={{ path('add_course') }} class="btn btn-primary mb-3">New Course</a>
+		{% if is_granted('ROLE_COORDINATOR') %}
+			<a href={{ path('add_course') }} class="btn btn-primary mb-3">New Course</a>
+		{% endif %}
 		{{ knp_pagination_render(courses, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
 	{% else %}
 		<p>No courses to display</p>

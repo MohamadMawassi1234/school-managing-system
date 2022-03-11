@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,7 +28,7 @@ class ClassController extends AbstractController {
             $request->query->getInt("page", 1),
             5,
         );
-        return $this->render("classes/list.html.twig", array("classes" => $classes));
+        return $this->render("classes/list.html.twig", array("classes" => $classes, "student" => ""));
     }
 
     /**
@@ -46,12 +47,13 @@ class ClassController extends AbstractController {
                 }
             }
         }
-        return $this->render("classes/filter.html.twig", array("filteredClasses" => $filteredClasses));
+        return $this->render("classes/filter.html.twig", array("filteredClasses" => $filteredClasses, "student" => ""));
     }
 
     /**
      * @Route("/class/add", name="add_class")
      * @Method({"GET", "POST"})
+     * @IsGranted("ROLE_COORDINATOR")
      */
     public function new(Request $request) {
         $class = new Classes();
@@ -82,6 +84,7 @@ class ClassController extends AbstractController {
     /**
      * @Route("/class/edit/{id}", name="edit_class")
      * @Method({"GET", "POST"})
+     * @IsGranted("ROLE_COORDINATOR")
      */
     public function edit(Request $request, $id) {
         $class = new Classes();
@@ -112,12 +115,13 @@ class ClassController extends AbstractController {
      */
     public function details($id) {
         $class= $this->getDoctrine()->getRepository(Classes::class)->find($id);
-        return $this->render("classes/details.html.twig", array("class" => $class)); 
+        return $this->render("classes/details.html.twig", array("class" => $class, "student" => "")); 
      }
 
     /**
-     * @Route("/class/delete/{id}")
+     * @Route("/class/delete/{id}", name="delete_class")
      * @Method({"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete($id) {
         $class= $this->getDoctrine()->getRepository(Classes::class)->find($id);

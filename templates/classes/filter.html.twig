@@ -6,7 +6,7 @@
 {% block body %}
     <h2>Search Classes</h2>
     <hr>
-    <form class="d-flex" action="/classes/filter" method="post">
+    <form class="d-flex" action={{ path('class_filter') }} method="post">
     <input class="form-control" name="class_search_query" type="text" required>
     <button class="btn btn-secondary" type="submit" name="class_search_submit">Search</button>
     </form>

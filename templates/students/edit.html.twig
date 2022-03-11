@@ -2,11 +2,12 @@
 
 {% block title %}Edit Student Details
 {% endblock %}
-
+{# {% block student_details %}{{ path('student_details', {id: student.id}) }}{% endblock %} #}
 {% block body %}
+
 	{{ form_start(form) }}
 	{{ form_widget(form) }}
 	{{ form_end(form) }}
-	<hr>
-	<a href={{ path('student_list') }}>Go Back</a>
+	<br>
+	<a href={{ path('student_details', {id: student.id}) }}>Details</a>
 {% endblock %}

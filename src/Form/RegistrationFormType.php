@@ -35,7 +35,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])->add("student_first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control"), "mapped" => false))
+            ])
+            ->add("student_first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control"), "mapped" => false))
             ->add("student_last_name", TextType::class, array('label' => "Last Name:", "attr" => array('class' => "form-control"), "mapped" => false))
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
