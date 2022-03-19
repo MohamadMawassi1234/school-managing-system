@@ -21,7 +21,7 @@ class AppController extends AbstractController {
             return $this->render("security/loginorregister.html.twig");
         } 
         if ($this->security->isGranted("ROLE_STUDENT")) {
-            $student = $this->security->getUser()->getStudent();
+            $student = $this->security->getUser();
             return $this->render("base.html.twig", ["student" => $student]);
         }
         return $this->render("base.html.twig");

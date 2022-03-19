@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"user" = "User", "student" = "Student"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -37,10 +40,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Student::class, cascade={"persist", "remove"})
-     */
-    private $student;
+    // /**
+    //  * @ORM\OneToOne(targetEntity=Student::class, cascade={"persist", "remove"})
+    //  */
+    // private $student;
 
     public function getId(): ?int
     {
@@ -131,17 +134,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
+    // public function getStudent(): ?Student
+    // {
+    //     return $this->student;
+    // }
 
-    public function setStudent(?Student $student): self
-    {
-        $this->student = $student;
+    // public function setStudent(?Student $student): self
+    // {
+    //     $this->student = $student;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function isAdmin(): bool
     {

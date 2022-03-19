@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use App\Entity\Classes;
 // use App\Entity\Student;
-// use App\Entity\Course;
+use App\Entity\Course;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Knp\Component\Pager\PaginatorInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ClassController extends AbstractController {
     /**
@@ -42,8 +44,8 @@ class ClassController extends AbstractController {
         if (isset($_POST['class_search_submit'])) {
             $searchQuery = $_POST['class_search_query'];
             for ($i=0; $i<count($classes); $i++) {
-                if (str_contains(strtolower($classes[$i]->getName()), strtolower($searchQuery))) {
-                    array_push($filteredClasses, $classes[$i]->getName());
+                if (str_contains(strtolower($classes[$i]->getCourse()->getName()." - ".$classes[$i]->getTime()), strtolower($searchQuery))) {
+                    array_push($filteredClasses, $classes[$i]->getCourse()->getName()." - ".$classes[$i]->getTime());
                 }
             }
         }
@@ -59,8 +61,15 @@ class ClassController extends AbstractController {
         $class = new Classes();
 
         $form = $this->createFormBuilder($class)
-            ->add("name", TextType::class, array('label' => "Class Name:", "attr" => array('class' => "form-control")))
+            ->add('course', EntityType::class, [
+                "attr" => array('class' => "form-select"),
+                'label' => "Course: ",
+                'class' => Course::class,
+                'choice_label' => 'name',
+            ])
+            ->add("time", TextType::class, array('label' => "Time:", "attr" => array('class' => "form-control")))
             ->add("section", TextType::class, array('label' => "Section:", "attr" => array('class' => "form-control")))
+            ->add("imageFile", VichImageType::class, array('required' => false, "attr" => array('class' => "form-control")))
             ->add('Add', SubmitType::class, array(
                 'attr' => array('class' => 'btn btn-primary mt-3')
             ))
@@ -74,6 +83,12 @@ class ClassController extends AbstractController {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($class);
             $entityManager->flush();
+            $originalImage = $class->getImage();
+            setcookie("image", $originalImage, time() + 86400, "/");
+            $class->setImage('resized_'.$originalImage);
+            $class->setThumbnail('thumbnail_'.$originalImage);
+            $entityManager->flush();
+            setcookie("updated_class", true, time() + 86400, "/");
 
             return $this->redirectToRoute('class_list');
         }
@@ -91,8 +106,15 @@ class ClassController extends AbstractController {
         $class= $this->getDoctrine()->getRepository(Classes::class)->find($id);
 
         $form = $this->createFormBuilder($class)
-            ->add("name", TextType::class, array('label' => "Class Name:", "attr" => array('class' => "form-control")))
+            ->add('course', EntityType::class, [
+                "attr" => array('class' => "form-select"),
+                'label' => "Course: ",
+                'class' => Course::class,
+                'choice_label' => 'name',
+            ])
+            ->add("time", TextType::class, array('label' => "Time:", "attr" => array('class' => "form-control")))
             ->add("section", TextType::class, array('label' => "Section:", "attr" => array('class' => "form-control")))
+            ->add("imageFile", VichImageType::class, array('required' => false, "attr" => array('class' => "form-control")))
             ->add('Update', SubmitType::class, array(
                 'attr' => array('class' => 'btn btn-primary mt-3')
             ))
@@ -103,6 +125,12 @@ class ClassController extends AbstractController {
         if($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+            $originalImage = $class->getImage();
+            setcookie("image", $originalImage, time() + 86400, "/");
+            $class->setImage('resized_'.$originalImage);
+            $class->setThumbnail('thumbnail_'.$originalImage);
+            $entityManager->flush();
+            setcookie("updated_class", true, time() + 86400, "/");
 
             return $this->redirectToRoute('class_list');
         }

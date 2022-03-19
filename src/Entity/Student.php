@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,32 +11,24 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Student
  *
- * @ORM\Table(name="student", indexes={@ORM\Index(name="class_id", columns={"class_id"})})
+ * @ORM\Table(name="student")
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class Student
+class Student extends User
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="last_name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      */
     private $lastName;
 
@@ -73,19 +67,21 @@ class Student
     private $updatedAt;
 
     /**
-     * @var \Classes
-     *
-     * @ORM\ManyToOne(targetEntity="Classes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="class_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity=Classes::class, inversedBy="students")
      */
     private $class;
 
-    public function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="student")
+     */
+    private $finalGrades;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->class = new ArrayCollection();
+        $this->finalGrades = new ArrayCollection();
     }
+
 
     public function getFirstName(): ?string
     {
@@ -174,14 +170,56 @@ class Student
         return $this;
     }
 
-    public function getClass(): ?Classes
+    /**
+     * @return Collection<int, Classes>
+     */
+    public function getClass(): Collection
     {
         return $this->class;
     }
 
-    public function setClass(?Classes $class): self
+    public function addClass(Classes $class): self
     {
-        $this->class = $class;
+        if (!$this->class->contains($class)) {
+            $this->class[] = $class;
+        }
+
+        return $this;
+    }
+
+    public function removeClass(Classes $class): self
+    {
+        $this->class->removeElement($class);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FinalGrade>
+     */
+    public function getFinalGrades(): Collection
+    {
+        return $this->finalGrades;
+    }
+
+    public function addFinalGrade(FinalGrade $finalGrade): self
+    {
+        if (!$this->finalGrades->contains($finalGrade)) {
+            $this->finalGrades[] = $finalGrade;
+            $finalGrade->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFinalGrade(FinalGrade $finalGrade): self
+    {
+        if ($this->finalGrades->removeElement($finalGrade)) {
+            // set the owning side to null (unless already changed)
+            if ($finalGrade->getStudent() === $this) {
+                $finalGrade->setStudent(null);
+            }
+        }
 
         return $this;
     }

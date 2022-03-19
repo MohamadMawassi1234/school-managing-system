@@ -1,13 +1,27 @@
 {% extends "base.html.twig" %}
 
-{% block title %}
-	{{ class.name }}
+{# {% block title %}
+	{{ class.id }}
+{% endblock %} #}
+
+{% block icon %}
+{% if class.thumbnail %}
+	rel="icon" href="{{ asset(class.thumbnail, 'classes') }}"
+{% endif %}
+{% endblock %}
+
+{% block logo %}
+{% if class.thumbnail %}
+	<img src="{{ asset(class.thumbnail, 'classes') }}" alt="img">
+{% endif %}
 {% endblock %}
 
 {% block body %}
-	<h1>{{ class.name }}</h1>
-	<h4>Section:
-		<span class="fw-normal">{{ class.section }}</span></h4>
+	<h1>{{ class.course.name ~ " - " ~ class.time }}</h1>
+	<h4>Section:<span class="fw-normal">{{ class.section }}</span></h4>
+	{% if class.image %}
+		<img src="{{ asset(class.image, 'classes') }}" alt="img">
+	{% endif %}
 	<hr>
 	<a href={{ path('class_list') }}>Go Back</a>
 {% endblock %}

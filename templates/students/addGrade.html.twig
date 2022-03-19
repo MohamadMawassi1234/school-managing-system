@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Add Grade
+{% endblock %}
+
+{% block body %}
+	<h2>Add Grade</h2>
+	<hr>
+	<form class="d-flex" method="post">
+		<input class="form-control" name="grade" type="text" required>
+		<button class="btn btn-secondary" type="submit" name="grade_submit">Submit</button>
+	</form>
+{% endblock %}

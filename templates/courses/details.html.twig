@@ -4,11 +4,23 @@
 	{{ course.name }}
 {% endblock %}
 
+{% block icon %}
+{% if course.thumbnail %}
+	rel="icon" href="{{ asset(course.thumbnail, 'courses') }}"
+{% endif %}
+{% endblock %}
+
+{% block logo %}
+{% if course.thumbnail %}
+	<img src="{{ asset(course.thumbnail, 'courses') }}" alt="img">
+{% endif %}
+{% endblock %}
+
 {% block body %}
 	<h1>{{ course.name }}</h1>
 	<p><span class="fw-bold">Description: </span>{{ course.description }}</p>
-	{% if course.class %}
-		<p><span class="fw-bold">Class: </span>{{ course.class.name }}</p>
+	{% if course.image %}
+		<img src="{{ asset(course.image, 'courses') }}" alt="img">
 	{% endif %}
 	<hr>
 	<a href={{ path('course_list') }}>Go Back</a>

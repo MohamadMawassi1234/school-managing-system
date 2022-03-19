@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Knp\Component\Pager\PaginatorInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CourseController extends AbstractController {
     /**
@@ -63,12 +64,7 @@ class CourseController extends AbstractController {
         $form = $this->createFormBuilder($course)
             ->add("name", TextType::class, array('label' => "Course Name:", "attr" => array('class' => "form-control")))
             ->add("description", TextareaType::class, array('label' => "Description:", "attr" => array('class' => "form-control")))
-            ->add('class', EntityType::class, [
-                "attr" => array('class' => "form-select"),
-                'label' => "Class: ",
-                'class' => Classes::class,
-                'choice_label' => 'name',
-            ])
+            ->add("imageFile", VichImageType::class, array('required' => false, "attr" => array('class' => "form-control")))
             ->add('Add', SubmitType::class, array(
                 'attr' => array('class' => 'btn btn-primary mt-3')
             ))
@@ -82,6 +78,12 @@ class CourseController extends AbstractController {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($course);
             $entityManager->flush();
+            $originalImage = $course->getImage();
+            setcookie("image", $originalImage, time() + 86400, "/");
+            $course->setImage('resized_'.$originalImage);
+            $course->setThumbnail('thumbnail_'.$originalImage);
+            $entityManager->flush();
+            setcookie("updated_course", true, time() + 86400, "/");
 
             return $this->redirectToRoute('course_list');
         }
@@ -101,12 +103,7 @@ class CourseController extends AbstractController {
         $form = $this->createFormBuilder($course)
             ->add("name", TextType::class, array('label' => "Course Name:", "attr" => array('class' => "form-control")))
             ->add("description", TextareaType::class, array('label' => "Description:", "attr" => array('class' => "form-control")))
-            ->add('class', EntityType::class, [
-                "attr" => array('class' => "form-select"),
-                'label' => "Class: ",
-                'class' => Classes::class,
-                'choice_label' => 'name',
-            ])
+            ->add("imageFile", VichImageType::class, array('required' => false, "attr" => array('class' => "form-control")))
             ->add('Update', SubmitType::class, array(
                 'attr' => array('class' => 'btn btn-primary mt-3')
             ))
@@ -118,6 +115,12 @@ class CourseController extends AbstractController {
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+            $originalImage = $course->getImage();
+            setcookie("image", $originalImage, time() + 86400, "/");
+            $course->setImage('resized_'.$originalImage);
+            $course->setThumbnail('thumbnail_'.$originalImage);
+            $entityManager->flush();
+            setcookie("updated_course", true, time() + 86400, "/");
 
             return $this->redirectToRoute('course_list');
         }
@@ -148,3 +151,11 @@ class CourseController extends AbstractController {
         return $this->redirectToRoute('course_list');
      }
 }
+
+
+// ->add('classes', EntityType::class, [
+//     "attr" => array('class' => "form-select"),
+//     'label' => "Class: ",
+//     'class' => Classes::class,
+//     'choice_label' => 'name',
+// ])

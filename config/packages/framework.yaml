@@ -15,6 +15,10 @@ framework:
     packages:
       uploads:
         base_path: uploads/images/students/
+      courses:
+        base_path: uploads/images/courses/
+      classes:
+        base_path: uploads/images/classes/
 
   #esi: true
   #fragments: true

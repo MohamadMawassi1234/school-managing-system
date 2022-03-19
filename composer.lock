@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29561d15735d6bf9a936c9b5abc89fa5",
+    "content-hash": "67d5fbbf08b89e7d00ceeecc383b1887",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2094,6 +2094,32 @@
                 }
             ],
             "time": "2021-12-21T14:34:37+00:00"
+        },
+        {
+            "name": "mybundle/image-resizer-bundle",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "C:/xampp/htdocs/ImageResizerBundle",
+                "reference": "2c7dd36851c04370a1b7363129843bdfe28f7068"
+            },
+            "require": {
+                "php": ">=7.3.9",
+                "symfony/framework-bundle": "^5.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "MyBundle\\ImageResizerBundle\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Resize images and create thumbnails",
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "nikic/php-parser",
@@ -8285,7 +8311,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mybundle/image-resizer-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

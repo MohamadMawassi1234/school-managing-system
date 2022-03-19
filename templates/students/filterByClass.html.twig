@@ -10,7 +10,7 @@
     <form class="d-flex" action={{ path('filter_by_class') }} method="post">
     <select name="class" id="" class="form-select">
         {% for class in classes %}
-            <option value={{ class.id }}>{{ class.name }}</option>     
+            <option value={{ class.id }}>{{ class.course.name ~ " - " ~ class.time }}</option>     
         {% endfor %}
     </select>
     <button class="btn btn-secondary" type="submit" name="submit">Search</button>

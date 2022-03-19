@@ -1,0 +1,53 @@
+image_resizer:
+  student:
+    resized_image:
+      width: 200
+      height: 200
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/students"
+    thumbnail:
+      width: 50
+      height: 50
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/students"
+  course:
+    resized_image:
+      width: 200
+      height: 200
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/courses"
+    thumbnail:
+      width: 50
+      height: 50
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/courses"
+  classes:
+    resized_image:
+      width: 200
+      height: 200
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/classes"
+    thumbnail:
+      width: 50
+      height: 50
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/classes"
+  default:
+    resized_image:
+      width: 200
+      height: 200
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/classes"
+    thumbnail:
+      width: 50
+      height: 50
+      quality: "100"
+      resize_by: maxHeight
+      location: "uploads/images/classes"

@@ -51,7 +51,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         if ($token->getUser()->isStudent()) {
-            return new RedirectResponse($this->urlGenerator->generate('student_details', ['id' => $token->getUser()->getStudent()->getId()]));
+            return new RedirectResponse($this->urlGenerator->generate('student_details', ['id' => $token->getUser()->getId()]));
         }
 
         // For example:

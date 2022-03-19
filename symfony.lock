@@ -107,6 +107,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.4.1"
     },
+    "mybundle/image-resizer-bundle": {
+        "version": "dev-master"
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
     },

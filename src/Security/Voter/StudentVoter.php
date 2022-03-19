@@ -31,10 +31,10 @@ class StudentVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'EDIT':
-                return $student == $user->getStudent() || $this->security->isGranted('ROLE_ADMIN');
+                return $student == $user || $this->security->isGranted('ROLE_ADMIN');
                 break;
             case 'SHOW':
-                return $student == $user->getStudent() || $this->security->isGranted('ROLE_COORDINATOR');
+                return $student == $user || $this->security->isGranted('ROLE_COORDINATOR');
                 break;
         }
 

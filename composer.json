@@ -3,6 +3,9 @@
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
+    "repositories": [
+        {"type": "path", "url":  "C:/xampp/htdocs/ImageResizerBundle"}
+    ],
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
@@ -28,7 +31,8 @@
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^1.19"
+        "vich/uploader-bundle": "^1.19",
+        "mybundle/image-resizer-bundle": "dev-master"
     },
     "config": {
         "allow-plugins": {

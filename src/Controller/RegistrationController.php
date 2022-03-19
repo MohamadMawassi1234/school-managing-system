@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Student;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
@@ -28,8 +27,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use App\Entity\Classes;
 
 
-// $session->get('name');
-
 class RegistrationController extends AbstractController
 {
     /**
@@ -37,7 +34,6 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager, AuthenticationUtils $authenticationUtils): Response
     {   
-        $session = new Session();
         if ($this->getUser()) {
             // if ($this->getUser()->getRoles() == ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN']) {
                 return $this->redirectToRoute('home');
@@ -48,38 +44,27 @@ class RegistrationController extends AbstractController
     }
 
         $student = new Student();
-
-        $user = new User();
-
-
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $student);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $student->setFirstName($form->get("student_first_name")->getData());
-            $student->setLastName($form->get("student_last_name")->getData());
-            
-            
-            $entityManager->persist($student);
-            $user->setStudent($student);
 
             // encode the plain password
-            $user->setPassword(
+            $student->setPassword(
             $userPasswordHasher->hashPassword(
-                    $user,
+                    $student,
                     $form->get('plainPassword')->getData()
                 )
             );
 
-            $user->setRoles(['ROLE_USER', 'ROLE_STUDENT']);
-            // $user->setRoles(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN']);
-            $entityManager->persist($user);
+            $student->setRoles(['ROLE_STUDENT']);
+            // $student->setRoles(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN']);
+            $entityManager->persist($student);
             $entityManager->flush();
-            $session->set('id', $student->getId());
             // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(
-                $user,
+                $student,
                 $authenticator,
                 $request
             );

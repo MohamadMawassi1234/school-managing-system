@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Student;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -36,8 +36,8 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add("student_first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control"), "mapped" => false))
-            ->add("student_last_name", TextType::class, array('label' => "Last Name:", "attr" => array('class' => "form-control"), "mapped" => false))
+            // ->add("first_name", TextType::class, array('label' => "First Name:", "attr" => array('class' => "form-control")))
+            // ->add("last_name", TextType::class, array('label' => "Last Name:", "attr" => array('class' => "form-control")))
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -52,7 +52,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Student::class,
         ]);
     }
 }

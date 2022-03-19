@@ -17,7 +17,7 @@
 			<tbody>
 				{% for class in classes %}
 					<tr>
-						<td>{{ class.name }}</td>
+						<td>{{ class.course.name ~ " - " ~ class.time }}</td>
 						<td>
 							<a href={{ path('class_details', {id: class.id}) }} class="btn btn-dark">Details</a>
 							{% if is_granted('ROLE_COORDINATOR') %}

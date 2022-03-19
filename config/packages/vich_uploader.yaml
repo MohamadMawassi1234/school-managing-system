@@ -8,3 +8,15 @@ vich_uploader:
       namer: 'Vich\UploaderBundle\Naming\UniqidNamer'
       delete_on_remove: true
       delete_on_update: true
+    course_images:
+      uri_prefix: "%app.path.course_images%"
+      upload_destination: "%kernel.project_dir%/public%app.path.course_images%"
+      namer: 'Vich\UploaderBundle\Naming\UniqidNamer'
+      delete_on_remove: true
+      delete_on_update: true
+    class_images:
+      uri_prefix: "%app.path.class_images%"
+      upload_destination: "%kernel.project_dir%/public%app.path.class_images%"
+      namer: 'Vich\UploaderBundle\Naming\UniqidNamer'
+      delete_on_remove: true
+      delete_on_update: true
