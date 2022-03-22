@@ -20,4 +20,5 @@ return [
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     MyBundle\ImageResizerBundle\ImageResizerBundle::class => ['all' => true],
+    // FOS\RestBundle\FOSRestBundle::class => ['all' => true],
 ];

@@ -40,10 +40,10 @@ class Course
      */
     private $description;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Classes::class, mappedBy="course")
-     */
-    private $classes;
+    // /**
+    //  * @ORM\OneToMany(targetEntity=Classes::class, mappedBy="course")
+    //  */
+    // private $classes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -122,35 +122,35 @@ class Course
     //     return $this;
     // }
 
-    /**
-     * @return Collection<int, Classes>
-     */
-    public function getClasses(): Collection
-    {
-        return $this->classes;
-    }
+    // /**
+    //  * @return Collection<int, Classes>
+    //  */
+    // public function getClasses(): Collection
+    // {
+    //     return $this->classes;
+    // }
 
-    public function addClass(Classes $class): self
-    {
-        if (!$this->classes->contains($class)) {
-            $this->classes[] = $class;
-            $class->setCourse($this);
-        }
+    // public function addClass(Classes $class): self
+    // {
+    //     if (!$this->classes->contains($class)) {
+    //         $this->classes[] = $class;
+    //         $class->setCourse($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeClass(Classes $class): self
-    {
-        if ($this->classes->removeElement($class)) {
-            // set the owning side to null (unless already changed)
-            if ($class->getCourse() === $this) {
-                $class->setCourse(null);
-            }
-        }
+    // public function removeClass(Classes $class): self
+    // {
+    //     if ($this->classes->removeElement($class)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($class->getCourse() === $this) {
+    //             $class->setCourse(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getImageFile()
     {

@@ -31,7 +31,9 @@
 		<p><span class="fw-bold">Class: </span> {{ student.class.course.name ~ " " ~ student.class.time }}</p>
 	{% endif %} #}
 	{# <a href="/student/addclass/{{ student.id }}" class="btn btn-dark">Add Class</a> #}
-	<a href={{ path('register_class', {id: student.id}) }} class="btn btn-dark">Add Class</a>
+	{% if is_granted('ROLE_STUDENT') or is_granted('ROLE_ADMIN') %}
+		<a href={{ path('register_class', {id: student.id}) }} class="btn btn-dark">Add Class</a>
+	{% endif %}
 	{% if classes %}
         <table id="classes" class="table table-striped">
             <thead>
@@ -46,7 +48,7 @@
 					{% if grades %}
 						{% for grade in grades %}
 							{% if grade.class == class %}
-								<td>{{grade.grade}}</td>
+								<td>Grade: {{grade.grade}}</td>
 							{% endif %}
 						{% endfor %}
 					{% endif %}
@@ -54,8 +56,12 @@
                         {# <a href="/class/{{ class.id }}" class="btn btn-dark">Show</a>
                         <a href="/class/edit/{{ class.id }}" class="btn btn-light">Edit</a> #}
                         {# <a href="/student/deleteclass/{{ student.id }}/{{ class.id }}" class="btn btn-danger">Drop</a> #}
-						<a href={{ path('add_grade', {sid: student.id, cid: class.id}) }} class="btn btn-info">Add Grade</a>
-						<a href={{ path('drop_class', {sid: student.id, cid: class.id}) }} class="btn btn-danger">Drop</a>
+						{% if is_granted('ROLE_COORDINATOR') %}
+							<a href={{ path('add_grade', {sid: student.id, cid: class.id}) }} class="btn btn-info">Add Grade</a>
+						{% endif %}
+						{% if is_granted('ROLE_STUDENT') or is_granted('ROLE_ADMIN') %}
+							<a href={{ path('drop_class', {sid: student.id, cid: class.id}) }} class="btn btn-danger">Drop</a>
+						{% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -65,7 +71,7 @@
         <p>No classes to display</p>
     {% endif %}
 	<hr>
-	{# {% if is_granted('ROLE_STUDENT') %} #}
+	{% if is_granted('ROLE_STUDENT') or is_granted('ROLE_ADMIN') %}
 		<a href={{ path('edit_student', {id: student.id}) }}>Edit</a>
-	{# {% endif %} #}
+	{% endif %}
 {% endblock %}

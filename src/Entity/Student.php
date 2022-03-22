@@ -71,10 +71,10 @@ class Student extends User
      */
     private $class;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="student")
-     */
-    private $finalGrades;
+    // /**
+    //  * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="student")
+    //  */
+    // private $finalGrades;
 
     public function __construct()
     {
@@ -194,35 +194,35 @@ class Student extends User
         return $this;
     }
 
-    /**
-     * @return Collection<int, FinalGrade>
-     */
-    public function getFinalGrades(): Collection
-    {
-        return $this->finalGrades;
-    }
+    // /**
+    //  * @return Collection<int, FinalGrade>
+    //  */
+    // public function getFinalGrades(): Collection
+    // {
+    //     return $this->finalGrades;
+    // }
 
-    public function addFinalGrade(FinalGrade $finalGrade): self
-    {
-        if (!$this->finalGrades->contains($finalGrade)) {
-            $this->finalGrades[] = $finalGrade;
-            $finalGrade->setStudent($this);
-        }
+    // public function addFinalGrade(FinalGrade $finalGrade): self
+    // {
+    //     if (!$this->finalGrades->contains($finalGrade)) {
+    //         $this->finalGrades[] = $finalGrade;
+    //         $finalGrade->setStudent($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeFinalGrade(FinalGrade $finalGrade): self
-    {
-        if ($this->finalGrades->removeElement($finalGrade)) {
-            // set the owning side to null (unless already changed)
-            if ($finalGrade->getStudent() === $this) {
-                $finalGrade->setStudent(null);
-            }
-        }
+    // public function removeFinalGrade(FinalGrade $finalGrade): self
+    // {
+    //     if ($this->finalGrades->removeElement($finalGrade)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($finalGrade->getStudent() === $this) {
+    //             $finalGrade->setStudent(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
 }

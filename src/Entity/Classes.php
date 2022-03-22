@@ -45,15 +45,15 @@ class Classes
      */
     private $course;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Student::class, mappedBy="class")
-     */
-    private $students;
+    // /**
+    //  * @ORM\ManyToMany(targetEntity=Student::class, mappedBy="class")
+    //  */
+    // private $students;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="class")
-     */
-    private $finalGrades;
+    // /**
+    //  * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="class")
+    //  */
+    // private $finalGrades;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -123,62 +123,62 @@ class Classes
         return $this;
     }
 
-    /**
-     * @return Collection<int, Student>
-     */
-    public function getStudents(): Collection
-    {
-        return $this->students;
-    }
+    // /**
+    //  * @return Collection<int, Student>
+    //  */
+    // public function getStudents(): Collection
+    // {
+    //     return $this->students;
+    // }
 
-    public function addStudent(Student $student): self
-    {
-        if (!$this->students->contains($student)) {
-            $this->students[] = $student;
-            $student->addClass($this);
-        }
+    // public function addStudent(Student $student): self
+    // {
+    //     if (!$this->students->contains($student)) {
+    //         $this->students[] = $student;
+    //         $student->addClass($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeStudent(Student $student): self
-    {
-        if ($this->students->removeElement($student)) {
-            $student->removeClass($this);
-        }
+    // public function removeStudent(Student $student): self
+    // {
+    //     if ($this->students->removeElement($student)) {
+    //         $student->removeClass($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * @return Collection<int, FinalGrade>
-     */
-    public function getFinalGrades(): Collection
-    {
-        return $this->finalGrades;
-    }
+    // /**
+    //  * @return Collection<int, FinalGrade>
+    //  */
+    // public function getFinalGrades(): Collection
+    // {
+    //     return $this->finalGrades;
+    // }
 
-    public function addFinalGrade(FinalGrade $finalGrade): self
-    {
-        if (!$this->finalGrades->contains($finalGrade)) {
-            $this->finalGrades[] = $finalGrade;
-            $finalGrade->setClass($this);
-        }
+    // public function addFinalGrade(FinalGrade $finalGrade): self
+    // {
+    //     if (!$this->finalGrades->contains($finalGrade)) {
+    //         $this->finalGrades[] = $finalGrade;
+    //         $finalGrade->setClass($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeFinalGrade(FinalGrade $finalGrade): self
-    {
-        if ($this->finalGrades->removeElement($finalGrade)) {
-            // set the owning side to null (unless already changed)
-            if ($finalGrade->getClass() === $this) {
-                $finalGrade->setClass(null);
-            }
-        }
+    // public function removeFinalGrade(FinalGrade $finalGrade): self
+    // {
+    //     if ($this->finalGrades->removeElement($finalGrade)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($finalGrade->getClass() === $this) {
+    //             $finalGrade->setClass(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getImageFile()
     {

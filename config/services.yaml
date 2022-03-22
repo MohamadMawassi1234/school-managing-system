@@ -52,18 +52,5 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
 
-  App\EventListener\ImageResizerListener:
-    tags:
-      - {
-          name: kernel.event_listener,
-          event: image_resizer,
-          method: handleResize,
-        }
-
-  App\Service\ImageResizerService:
-    arguments:
-      $thumbnail_height: 50
-      $resized_height: 200
-
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

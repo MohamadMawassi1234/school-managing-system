@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Entity\Classes;
-// use App\Entity\Student;
 use App\Entity\Course;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -81,14 +80,15 @@ class ClassController extends AbstractController {
             $class = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
+            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($class))->getName(), 11);
             $entityManager->persist($class);
             $entityManager->flush();
+            setcookie("entity_name", $entityName, time() + 86400, "/");
             $originalImage = $class->getImage();
             setcookie("image", $originalImage, time() + 86400, "/");
             $class->setImage('resized_'.$originalImage);
             $class->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
-            setcookie("updated_class", true, time() + 86400, "/");
 
             return $this->redirectToRoute('class_list');
         }
@@ -124,13 +124,14 @@ class ClassController extends AbstractController {
 
         if($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($class))->getName(), 11);
             $entityManager->flush();
+            setcookie("entity_name", $entityName, time() + 86400, "/");
             $originalImage = $class->getImage();
             setcookie("image", $originalImage, time() + 86400, "/");
             $class->setImage('resized_'.$originalImage);
             $class->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
-            setcookie("updated_class", true, time() + 86400, "/");
 
             return $this->redirectToRoute('class_list');
         }

@@ -216,8 +216,7 @@ class StudentController extends AbstractController {
      * @Method({"GET", "POST"})
      * @IsGranted("EDIT", subject="student")
      */
-    public function edit(Request $request, $id, EventDispatcherInterface $eventDispatcher, Student $student, ImageResizerService $imageResizerService) {
-        // $student = new Student();
+    public function edit(Request $request, $id, Student $student) {
         $student= $this->getDoctrine()->getRepository(Student::class)->find($id);
 
         $form = $this->createFormBuilder($student)
@@ -236,13 +235,14 @@ class StudentController extends AbstractController {
         if($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
+            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($student))->getName(), 11);
             $entityManager->flush();
             $originalImage = $student->getImage();
+            setcookie("entity_name", $entityName, time() + 86400, "/");
             setcookie("image", $originalImage, time() + 86400, "/");
             $student->setImage('resized_'.$originalImage);
             $student->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
-            setcookie("updated_student", true, time() + 86400, "/");
 
 
 
@@ -263,7 +263,9 @@ class StudentController extends AbstractController {
         // $student= $this->getDoctrine()->getRepository(Student::class)->find($id);
         $classes = $student->getClass()->getValues();
     
-        $grades = $student->getFinalGrades()->getValues();
+ 
+        $grades = $this->getDoctrine()->getRepository(FinalGrade::class)->findBy(["student" => $student]);
+
         for ($j=0; $j<count($classes); $j++) {
         for ($i=0; $i<count($grades); $i++) {
             if ($grades[$i]->getClass() == $classes[$j]) {
@@ -278,8 +280,7 @@ class StudentController extends AbstractController {
             }
         }
         $entityManager->flush();
-        $grades = $student->getFinalGrades()->getValues();
-        // dd($student->getFinalGrades()->getValues());
+        $grades = $this->getDoctrine()->getRepository(FinalGrade::class)->findBy(["student" => $student]);
         return $this->render("students/details.html.twig", array("student" => $student, "classes" => $classes, "grades" => $grades)); 
      }
 

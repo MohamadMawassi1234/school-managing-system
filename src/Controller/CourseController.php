@@ -60,6 +60,7 @@ class CourseController extends AbstractController {
      */
     public function new(Request $request) {
         $course = new Course();
+        
 
         $form = $this->createFormBuilder($course)
             ->add("name", TextType::class, array('label' => "Course Name:", "attr" => array('class' => "form-control")))
@@ -76,14 +77,15 @@ class CourseController extends AbstractController {
             $course = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
+            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($course))->getName(), 11);
             $entityManager->persist($course);
             $entityManager->flush();
             $originalImage = $course->getImage();
+            setcookie("entity_name", $entityName, time() + 86400, "/");
             setcookie("image", $originalImage, time() + 86400, "/");
             $course->setImage('resized_'.$originalImage);
             $course->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
-            setcookie("updated_course", true, time() + 86400, "/");
 
             return $this->redirectToRoute('course_list');
         }
@@ -99,6 +101,7 @@ class CourseController extends AbstractController {
     public function edit(Request $request, $id) {
         $course = new Course();
         $course= $this->getDoctrine()->getRepository(Course::class)->find($id);
+        
 
         $form = $this->createFormBuilder($course)
             ->add("name", TextType::class, array('label' => "Course Name:", "attr" => array('class' => "form-control")))
@@ -114,13 +117,14 @@ class CourseController extends AbstractController {
         if($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
+            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($course))->getName(), 11);
             $entityManager->flush();
             $originalImage = $course->getImage();
+            setcookie("entity_name", $entityName, time() + 86400, "/");
             setcookie("image", $originalImage, time() + 86400, "/");
             $course->setImage('resized_'.$originalImage);
             $course->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
-            setcookie("updated_course", true, time() + 86400, "/");
 
             return $this->redirectToRoute('course_list');
         }
