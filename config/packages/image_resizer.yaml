@@ -1,11 +1,5 @@
 image_resizer:
   context:
-    # student:
-    #   table: hello
-    # course:
-    #   table: hello
-    # classes:
-    #   table: hello
     student:
       resized_image:
         width: 200
@@ -45,16 +39,3 @@ image_resizer:
         quality: "100"
         resize_by: maxHeight
         location: "uploads/images/classes"
-# default:
-#   resized_image:
-#     width: 200
-#     height: 200
-#     quality: "100"
-#     resize_by: maxHeight
-#     location: "uploads/images/classes"
-#   thumbnail:
-#     width: 50
-#     height: 50
-#     quality: "100"
-#     resize_by: maxHeight
-#     location: "uploads/images/classes"
