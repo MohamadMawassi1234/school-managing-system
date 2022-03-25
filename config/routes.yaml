@@ -9,3 +9,6 @@
 #   path: /api/v1/courses
 #   controller: App\Controller\CourseApiController::listClasses
 #   methods: ["GET"]
+
+api_login_check:
+  path: /api/login

@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Security;
@@ -31,6 +32,6 @@ class AppController extends AbstractController {
      * @Route("/accessdenied", name="access_denied")
      */
     public function accessDenied() {
-        return $this->render("security/accessdenied.html.twig");
+        return new Response($this->renderView("security/accessdenied.html.twig"), 403);
     }
 }
