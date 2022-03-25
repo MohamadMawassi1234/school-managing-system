@@ -8,5 +8,4 @@
 /var/
 /vendor/
 /.env
-/src/Controller/ClassApiController.php
 ###< symfony/framework-bundle ###
