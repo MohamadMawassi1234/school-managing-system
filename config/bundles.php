@@ -19,6 +19,7 @@ return [
     Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
-    MyBundle\ImageResizerBundle\ImageResizerBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
+    // FOS\RestBundle\FOSRestBundle::class => ['all' => true],
+    MyBundle\ImageResizerBundle\ImageResizerBundle::class => ['all' => true],
 ];

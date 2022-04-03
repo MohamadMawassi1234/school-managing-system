@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -21,29 +23,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"student"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"student"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user"})
      */
     private $password;
-
-    // /**
-    //  * @ORM\OneToOne(targetEntity=Student::class, cascade={"persist", "remove"})
-    //  */
-    // private $student;
 
     public function getId(): ?int
     {
@@ -133,18 +134,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
-    // public function getStudent(): ?Student
-    // {
-    //     return $this->student;
-    // }
-
-    // public function setStudent(?Student $student): self
-    // {
-    //     $this->student = $student;
-
-    //     return $this;
-    // }
 
     public function isAdmin(): bool
     {

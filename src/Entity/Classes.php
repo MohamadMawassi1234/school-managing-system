@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Classes
@@ -23,6 +25,7 @@ class Classes
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"class"})
      */
     private $id;
 
@@ -30,6 +33,7 @@ class Classes
      * @var string
      *
      * @ORM\Column(name="time", type="string", length=255, nullable=true)
+     * @Groups({"student", "grade", "class"})
      */
     private $time;
 
@@ -37,35 +41,30 @@ class Classes
      * @var string|null
      *
      * @ORM\Column(name="section", type="string", length=255, nullable=true)
+     * @Groups({"class"})
      */
     private $section;
 
     /**
      * @ORM\ManyToOne(targetEntity=Course::class, inversedBy="classes")
+     * @Groups({"student", "grade", "class"})
      */
     private $course;
 
-    // /**
-    //  * @ORM\ManyToMany(targetEntity=Student::class, mappedBy="class")
-    //  */
-    // private $students;
-
-    // /**
-    //  * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="class")
-    //  */
-    // private $finalGrades;
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Ignore()
      */
     private $image;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Ignore()
      */
     private $thumbnail;
 
     /**
+     * @Ignore()
      * @Vich\UploadableField(mapping="class_images", fileNameProperty="image")
      * @var File
      */
@@ -73,6 +72,7 @@ class Classes
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Ignore()
      */
     private $updatedAt;
 
@@ -122,63 +122,6 @@ class Classes
 
         return $this;
     }
-
-    // /**
-    //  * @return Collection<int, Student>
-    //  */
-    // public function getStudents(): Collection
-    // {
-    //     return $this->students;
-    // }
-
-    // public function addStudent(Student $student): self
-    // {
-    //     if (!$this->students->contains($student)) {
-    //         $this->students[] = $student;
-    //         $student->addClass($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeStudent(Student $student): self
-    // {
-    //     if ($this->students->removeElement($student)) {
-    //         $student->removeClass($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * @return Collection<int, FinalGrade>
-    //  */
-    // public function getFinalGrades(): Collection
-    // {
-    //     return $this->finalGrades;
-    // }
-
-    // public function addFinalGrade(FinalGrade $finalGrade): self
-    // {
-    //     if (!$this->finalGrades->contains($finalGrade)) {
-    //         $this->finalGrades[] = $finalGrade;
-    //         $finalGrade->setClass($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeFinalGrade(FinalGrade $finalGrade): self
-    // {
-    //     if ($this->finalGrades->removeElement($finalGrade)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($finalGrade->getClass() === $this) {
-    //             $finalGrade->setClass(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
 
     public function getImageFile()
     {
@@ -230,6 +173,4 @@ class Classes
 
         return $this;
     }
-
-
 }

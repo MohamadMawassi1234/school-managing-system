@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Classes;
@@ -16,13 +17,16 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Knp\Component\Pager\PaginatorInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Doctrine\ORM\EntityManagerInterface;
 
-class ClassController extends AbstractController {
+class ClassController extends AbstractController
+{
     /**
      * @Route("/classes", name="class_list")
      * @Method({"GET"})
      */
-    public function listClasses(Request $request, PaginatorInterface $paginator) {
+    public function listClasses(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager)
+    {
         $classes = $this->getDoctrine()->getRepository(Classes::class)->findAll();
         $classes = $paginator->paginate(
             $classes,
@@ -35,16 +39,17 @@ class ClassController extends AbstractController {
     /**
      * @Route("/classes/filter", name="class_filter")
      */
-    public function filterClasses() {
+    public function filterClasses()
+    {
         $classes = $this->getDoctrine()->getRepository(Classes::class)->findAll();
         $searchQuery = "";
         $filteredClasses = [];
 
         if (isset($_POST['class_search_submit'])) {
             $searchQuery = $_POST['class_search_query'];
-            for ($i=0; $i<count($classes); $i++) {
-                if (str_contains(strtolower($classes[$i]->getCourse()->getName()." - ".$classes[$i]->getTime()), strtolower($searchQuery))) {
-                    array_push($filteredClasses, $classes[$i]->getCourse()->getName()." - ".$classes[$i]->getTime());
+            for ($i = 0; $i < count($classes); $i++) {
+                if (str_contains(strtolower($classes[$i]->getCourse()->getName() . " - " . $classes[$i]->getTime()), strtolower($searchQuery))) {
+                    array_push($filteredClasses, $classes[$i]->getCourse()->getName() . " - " . $classes[$i]->getTime());
                 }
             }
         }
@@ -56,7 +61,8 @@ class ClassController extends AbstractController {
      * @Method({"GET", "POST"})
      * @IsGranted("ROLE_COORDINATOR")
      */
-    public function new(Request $request) {
+    public function new(Request $request)
+    {
         $class = new Classes();
 
         $form = $this->createFormBuilder($class)
@@ -76,18 +82,11 @@ class ClassController extends AbstractController {
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $class = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($class))->getName(), 11);
             $entityManager->persist($class);
-            $entityManager->flush();
-            setcookie("entity_name", $entityName, time() + 86400, "/");
-            $originalImage = $class->getImage();
-            setcookie("image", $originalImage, time() + 86400, "/");
-            $class->setImage('resized_'.$originalImage);
-            $class->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
 
             return $this->redirectToRoute('class_list');
@@ -101,9 +100,10 @@ class ClassController extends AbstractController {
      * @Method({"GET", "POST"})
      * @IsGranted("ROLE_COORDINATOR")
      */
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         $class = new Classes();
-        $class= $this->getDoctrine()->getRepository(Classes::class)->find($id);
+        $class = $this->getDoctrine()->getRepository(Classes::class)->find($id);
 
         $form = $this->createFormBuilder($class)
             ->add('course', EntityType::class, [
@@ -122,16 +122,10 @@ class ClassController extends AbstractController {
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($class))->getName(), 11);
             $entityManager->flush();
-            setcookie("entity_name", $entityName, time() + 86400, "/");
-            $originalImage = $class->getImage();
-            setcookie("image", $originalImage, time() + 86400, "/");
-            $class->setImage('resized_'.$originalImage);
-            $class->setThumbnail('thumbnail_'.$originalImage);
-            $entityManager->flush();
+
 
             return $this->redirectToRoute('class_list');
         }
@@ -142,23 +136,25 @@ class ClassController extends AbstractController {
     /**
      * @Route("/class/{id}", name="class_details")
      */
-    public function details($id) {
-        $class= $this->getDoctrine()->getRepository(Classes::class)->find($id);
-        return $this->render("classes/details.html.twig", array("class" => $class, "student" => "")); 
-     }
+    public function details($id)
+    {
+        $class = $this->getDoctrine()->getRepository(Classes::class)->find($id);
+        return $this->render("classes/details.html.twig", array("class" => $class, "student" => ""));
+    }
 
     /**
      * @Route("/class/delete/{id}", name="delete_class")
      * @Method({"DELETE"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete($id) {
-        $class= $this->getDoctrine()->getRepository(Classes::class)->find($id);
-        
+    public function delete($id)
+    {
+        $class = $this->getDoctrine()->getRepository(Classes::class)->find($id);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($class);
         $entityManager->flush();
 
         return $this->redirectToRoute('class_list');
-     }
+    }
 }

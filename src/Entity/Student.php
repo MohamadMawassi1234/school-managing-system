@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Student
@@ -22,6 +24,7 @@ class Student extends User
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     * @Groups({"student", "grade"})
      */
     private $firstName;
 
@@ -29,6 +32,7 @@ class Student extends User
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     * @Groups({"student", "grade"})
      */
     private $lastName;
 
@@ -36,6 +40,7 @@ class Student extends User
      * @var string|null
      *
      * @ORM\Column(name="date_of_birth", type="string", length=255, nullable=true)
+     * @Groups({"student"})
      */
     private $dateOfBirth;
 
@@ -68,20 +73,15 @@ class Student extends User
 
     /**
      * @ORM\ManyToMany(targetEntity=Classes::class, inversedBy="students")
+     * @Groups({"student"})
      */
     private $class;
-
-    // /**
-    //  * @ORM\OneToMany(targetEntity=FinalGrade::class, mappedBy="student")
-    //  */
-    // private $finalGrades;
 
     public function __construct()
     {
         $this->class = new ArrayCollection();
         $this->finalGrades = new ArrayCollection();
     }
-
 
     public function getFirstName(): ?string
     {
@@ -114,6 +114,7 @@ class Student extends User
 
     public function setImageFile(File $image = null)
     {
+
         $this->imageFile = $image;
 
         if ($image) {
@@ -187,42 +188,18 @@ class Student extends User
         return $this;
     }
 
+    /**
+     * @return Collection<int, Classes>
+     */
+    public function setClass($class): void
+    {
+        $this->$class = $class;
+    }
+
     public function removeClass(Classes $class): self
     {
         $this->class->removeElement($class);
 
         return $this;
     }
-
-    // /**
-    //  * @return Collection<int, FinalGrade>
-    //  */
-    // public function getFinalGrades(): Collection
-    // {
-    //     return $this->finalGrades;
-    // }
-
-    // public function addFinalGrade(FinalGrade $finalGrade): self
-    // {
-    //     if (!$this->finalGrades->contains($finalGrade)) {
-    //         $this->finalGrades[] = $finalGrade;
-    //         $finalGrade->setStudent($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeFinalGrade(FinalGrade $finalGrade): self
-    // {
-    //     if ($this->finalGrades->removeElement($finalGrade)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($finalGrade->getStudent() === $this) {
-    //             $finalGrade->setStudent(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
-
 }

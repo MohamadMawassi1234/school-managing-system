@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Course
@@ -23,6 +25,7 @@ class Course
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"course"})
      */
     private $id;
 
@@ -30,6 +33,7 @@ class Course
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"student", "grade", "course", "class"})
      */
     private $name;
 
@@ -37,6 +41,7 @@ class Course
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @Groups({"course"})
      */
     private $description;
 
@@ -47,15 +52,18 @@ class Course
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Ignore()
      */
     private $image;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Ignore()
      */
     private $thumbnail;
 
     /**
+     * @Ignore()
      * @Vich\UploadableField(mapping="course_images", fileNameProperty="image")
      * @var File
      */
@@ -63,6 +71,7 @@ class Course
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Ignore()
      */
     private $updatedAt;
 
@@ -70,16 +79,6 @@ class Course
     {
         $this->classes = new ArrayCollection();
     }
-
-    // /**
-    //  * @var \Classes
-    //  *
-    //  * @ORM\ManyToOne(targetEntity="Classes")
-    //  * @ORM\JoinColumns({
-    //  *   @ORM\JoinColumn(name="class_id", referencedColumnName="id", onDelete="SET NULL")
-    //  * })
-    //  */
-    // private $class;
 
     public function getId(): ?int
     {
@@ -110,48 +109,6 @@ class Course
         return $this;
     }
 
-    // public function getClass(): ?Classes
-    // {
-    //     return $this->class;
-    // }
-
-    // public function setClass(?Classes $class): self
-    // {
-    //     $this->class = $class;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * @return Collection<int, Classes>
-    //  */
-    // public function getClasses(): Collection
-    // {
-    //     return $this->classes;
-    // }
-
-    // public function addClass(Classes $class): self
-    // {
-    //     if (!$this->classes->contains($class)) {
-    //         $this->classes[] = $class;
-    //         $class->setCourse($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeClass(Classes $class): self
-    // {
-    //     if ($this->classes->removeElement($class)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($class->getCourse() === $this) {
-    //             $class->setCourse(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
     public function getImageFile()
     {
         return $this->imageFile;
@@ -160,7 +117,6 @@ class Course
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
-
         if ($image) {
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTimeImmutable('now');
@@ -202,6 +158,4 @@ class Course
 
         return $this;
     }
-
-
 }

@@ -52,5 +52,13 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
 
+  # app.student_controller:
+  #   class: App\Controller\StudentController
+  #   arguments:
+  #     $request: "@parameter_bag"
+
+  # Symfony\Component\HttpFoundation\Request:
+  #   arguments: ["@request"]
+
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

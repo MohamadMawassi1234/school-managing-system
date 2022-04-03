@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Course;
-use App\Entity\Classes;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,17 +14,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Knp\Component\Pager\PaginatorInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class CourseController extends AbstractController {
+class CourseController extends AbstractController
+{
     /**
      * @Route("/courses", name="course_list")
      * @Method({"GET"})
      */
-    public function listCourses(Request $request, PaginatorInterface $paginator) {
+    public function listCourses(Request $request, PaginatorInterface $paginator)
+    {
         $courses = $this->getDoctrine()->getRepository(Course::class)->findAll();
         $courses = $paginator->paginate(
             $courses,
@@ -37,14 +37,15 @@ class CourseController extends AbstractController {
     /**
      * @Route("/courses/filter", name="course_filter")
      */
-    public function filterCourses() {
+    public function filterCourses()
+    {
         $courses = $this->getDoctrine()->getRepository(Course::class)->findAll();
         $searchQuery = "";
         $filteredCourses = [];
 
         if (isset($_POST['course_search_submit'])) {
             $searchQuery = $_POST['course_search_query'];
-            for ($i=0; $i<count($courses); $i++) {
+            for ($i = 0; $i < count($courses); $i++) {
                 if (str_contains(strtolower($courses[$i]->getName()), strtolower($searchQuery))) {
                     array_push($filteredCourses, $courses[$i]->getName());
                 }
@@ -58,10 +59,9 @@ class CourseController extends AbstractController {
      * @Method({"GET", "POST"})
      * @IsGranted("ROLE_COORDINATOR")
      */
-    public function new(Request $request) {
+    public function new(Request $request)
+    {
         $course = new Course();
-        
-
         $form = $this->createFormBuilder($course)
             ->add("name", TextType::class, array('label' => "Course Name:", "attr" => array('class' => "form-control")))
             ->add("description", TextareaType::class, array('label' => "Description:", "attr" => array('class' => "form-control")))
@@ -73,18 +73,11 @@ class CourseController extends AbstractController {
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $course = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($course))->getName(), 11);
             $entityManager->persist($course);
-            $entityManager->flush();
-            $originalImage = $course->getImage();
-            setcookie("entity_name", $entityName, time() + 86400, "/");
-            setcookie("image", $originalImage, time() + 86400, "/");
-            $course->setImage('resized_'.$originalImage);
-            $course->setThumbnail('thumbnail_'.$originalImage);
             $entityManager->flush();
 
             return $this->redirectToRoute('course_list');
@@ -98,10 +91,10 @@ class CourseController extends AbstractController {
      * @Method({"GET", "POST"})
      * @IsGranted("ROLE_COORDINATOR")
      */
-    public function edit(Request $request, $id) {
-        $course = new Course();
-        $course= $this->getDoctrine()->getRepository(Course::class)->find($id);
-        
+    public function edit(Request $request, $id)
+    {
+        // $course = new Course();
+        $course = $this->getDoctrine()->getRepository(Course::class)->find($id);
 
         $form = $this->createFormBuilder($course)
             ->add("name", TextType::class, array('label' => "Course Name:", "attr" => array('class' => "form-control")))
@@ -114,18 +107,9 @@ class CourseController extends AbstractController {
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityName = substr($entityManager->getMetadataFactory()->getMetadataFor(get_class($course))->getName(), 11);
             $entityManager->flush();
-            $originalImage = $course->getImage();
-            setcookie("entity_name", $entityName, time() + 86400, "/");
-            setcookie("image", $originalImage, time() + 86400, "/");
-            $course->setImage('resized_'.$originalImage);
-            $course->setThumbnail('thumbnail_'.$originalImage);
-            $entityManager->flush();
-
             return $this->redirectToRoute('course_list');
         }
 
@@ -135,31 +119,25 @@ class CourseController extends AbstractController {
     /**
      * @Route("/course/{id}", name="course_details")
      */
-    public function details($id) {
-        $course= $this->getDoctrine()->getRepository(Course::class)->find($id);
-        return $this->render("courses/details.html.twig", array("course" => $course, "student" => "")); 
-     }
+    public function details($id)
+    {
+        $course = $this->getDoctrine()->getRepository(Course::class)->find($id);
+        return $this->render("courses/details.html.twig", array("course" => $course, "student" => ""));
+    }
 
-     /**
+    /**
      * @Route("/course/delete/{id}", name="delete_course")
      * @Method({"DELETE"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete($id) {
-        $course= $this->getDoctrine()->getRepository(Course::class)->find($id);
-        
+    public function delete($id)
+    {
+        $course = $this->getDoctrine()->getRepository(Course::class)->find($id);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($course);
         $entityManager->flush();
 
         return $this->redirectToRoute('course_list');
-     }
+    }
 }
-
-
-// ->add('classes', EntityType::class, [
-//     "attr" => array('class' => "form-select"),
-//     'label' => "Class: ",
-//     'class' => Classes::class,
-//     'choice_label' => 'name',
-// ])

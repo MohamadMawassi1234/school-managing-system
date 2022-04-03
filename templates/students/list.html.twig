@@ -33,6 +33,9 @@
 				{% endfor %}
 			</tbody>
 		</table>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a href={{ path('new_student') }} class="btn btn-primary mb-3">New Student</a>
+		{% endif %}
 		{{ knp_pagination_render(students, "@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig") }} 
 	{% else %}
 		<p>No students to display</p>
